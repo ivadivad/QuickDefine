@@ -1,25 +1,24 @@
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 
 function App() {
-
-  function handleMessage(message: any) {
-    console.log(message.word);
-    console.log(message.meaning);
-  }
+  const [word, setWord] = useState("");
+  const [meaning, setMeaning] = useState("");
 
   useEffect(() => {
-    chrome.runtime.onMessage.addListener(handleMessage);
-
-    return () => {
-      console.log("chrome:", chrome);
-      chrome.runtime.onMessage.removeListener(handleMessage);
-    };
+    chrome.runtime.sendMessage({ type: "GET_DATA" }, (response) => {
+      if (response) {
+        setWord(response.word);
+        setMeaning(response.meaning);
+      }
+    });
   }, []);
 
   return (
-    <div>
-      <h1>RightDefine</h1>
+    <div style={{ padding: 10, width: 250 }}>
+
+      <p><strong>{word || "Nenhuma palavra selecionada"}</strong></p>
+
+      <p>{meaning}</p>
     </div>
   );
 }

@@ -1,15 +1,18 @@
 {
-    "manifest_version": 3,
-    "name": "Quick Define",
-    "version": "1.0",
-    "description": "A Chrome extension to quickly define selected words.",
-    "author": "Davi Guimarães",
-    "browser_action": {
-        "default_popup": "index.html",
-        "default_icon": {
-            "16": "icons/icon16.png",
-            "48": "icons/icon48.png",
-            "128": "icons/icon128.png"
-        }
+  "manifest_version": 3,
+  "name": "QuickDefine",
+  "version": "1.0",
+  "permissions": ["activeTab", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
     }
+  ]
 }

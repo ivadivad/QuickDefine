@@ -12,6 +12,7 @@ function App() {
     chrome.runtime.onMessage.addListener(handleMessage);
 
     return () => {
+      console.log("chrome:", chrome);
       chrome.runtime.onMessage.removeListener(handleMessage);
     };
   }, []);

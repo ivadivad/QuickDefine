@@ -1,4 +1,3 @@
-```markdown
 # 📘 QuickDefine
 
 Uma extensão para navegador que permite selecionar qualquer palavra em uma página web e obter sua definição automaticamente, com suporte a tradução para português.
@@ -7,13 +6,13 @@ Uma extensão para navegador que permite selecionar qualquer palavra em uma pág
 
 ## 🚀 Funcionalidades
 
-- Seleção de palavras diretamente na página
-- Detecção automática do texto selecionado
-- Tradução automática (qualquer idioma → inglês)
-- Busca de definição em inglês
-- Tradução da definição para português
-- Interface simples via popup
-- Arquitetura baseada em extensões modernas (Manifest V3)
+* Seleção de palavras diretamente na página
+* Detecção automática do texto selecionado
+* Tradução automática (qualquer idioma → inglês)
+* Busca de definição em inglês
+* Tradução da definição para português
+* Interface simples via popup
+* Arquitetura baseada em extensões modernas (Manifest V3)
 
 ---
 
@@ -21,35 +20,36 @@ Uma extensão para navegador que permite selecionar qualquer palavra em uma pág
 
 O fluxo da aplicação segue a arquitetura padrão de extensões:
 
+```txt
+Content Script → Background → Popup
 ```
 
-Content Script → Background → Popup
-
-````
-
 ### 🔹 Content Script
-- Escuta a seleção de texto (`mouseup`)
-- Envia a palavra selecionada para o background
+
+* Escuta a seleção de texto (`mouseup`)
+* Envia a palavra selecionada para o background
 
 ### 🔹 Background (Service Worker)
-- Recebe a palavra
-- Traduz para inglês
-- Consulta a API de dicionário
-- Traduz a definição para português
-- Armazena o resultado
+
+* Recebe a palavra
+* Traduz para inglês
+* Consulta a API de dicionário
+* Traduz a definição para português
+* Armazena o resultado
 
 ### 🔹 Popup (React)
-- Solicita os dados ao abrir
-- Exibe a palavra e sua definição
+
+* Solicita os dados ao abrir
+* Exibe a palavra e sua definição
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-- React
-- TypeScript
-- Vite
-- Chrome Extension API (Manifest V3)
+* React
+* TypeScript
+* Vite
+* Chrome Extension API (Manifest V3)
 
 ---
 
@@ -60,7 +60,9 @@ Content Script → Background → Popup
 ```bash
 git clone https://github.com/ivadivad/QuickDefine
 cd QuickDefine
-````
+```
+
+---
 
 ### 2. Instale as dependências
 
@@ -68,11 +70,15 @@ cd QuickDefine
 npm install
 ```
 
+---
+
 ### 3. Build do projeto
 
 ```bash
 npm run build
 ```
+
+---
 
 ### 4. Carregar no Chrome
 
@@ -81,7 +87,7 @@ npm run build
 3. Clique em **"Carregar sem compactação"**
 4. Selecione a pasta:
 
-```
+```txt
 dist/
 ```
 
@@ -116,8 +122,8 @@ dist/
 
 ## 📚 APIs utilizadas
 
-* [https://dictionaryapi.dev/](https://dictionaryapi.dev/)
-* [https://translate.googleapis.com/](https://translate.googleapis.com/)
+* Dictionary API: [https://dictionaryapi.dev/](https://dictionaryapi.dev/)
+* Google Translate (não oficial)
 
 ---
 
@@ -125,5 +131,3 @@ dist/
 
 Este projeto é open-source e pode ser utilizado para fins de estudo e aprimoramento.
 
-```
-```

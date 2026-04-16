@@ -1,17 +1,23 @@
+Claro — aqui está o README apenas como texto puro, pronto pra copiar:
+
+---
+
 # 📘 QuickDefine
 
-Uma extensão para navegador que permite selecionar qualquer palavra em uma página web e obter sua definição automaticamente, com suporte a tradução para português.
+Uma extensão para navegador que permite selecionar qualquer palavra em uma página web e obter sua definição automaticamente, com tradução para português — diretamente na tela, sem precisar abrir abas ou popups do navegador.
 
 ---
 
 ## 🚀 Funcionalidades
 
 * Seleção de palavras diretamente na página
-* Detecção automática do texto selecionado
+* Menu de contexto (botão direito → Definir palavra)
+* Popup dinâmico exibido na própria página
 * Tradução automática (qualquer idioma → inglês)
 * Busca de definição em inglês
 * Tradução da definição para português
-* Interface simples via popup
+* Interface leve, rápida e não intrusiva
+* Fechamento automático ao clicar fora
 * Arquitetura baseada em extensões modernas (Manifest V3)
 
 ---
@@ -20,27 +26,28 @@ Uma extensão para navegador que permite selecionar qualquer palavra em uma pág
 
 O fluxo da aplicação segue a arquitetura padrão de extensões:
 
-```txt
-Content Script → Background → Popup
-```
+Content Script → Background → UI (Popup in-page)
 
 ### 🔹 Content Script
 
-* Escuta a seleção de texto (`mouseup`)
-* Envia a palavra selecionada para o background
+* Detecta seleção de texto
+* Recebe eventos do menu de contexto
+* Renderiza o popup diretamente na página
 
 ### 🔹 Background (Service Worker)
 
-* Recebe a palavra
+* Recebe a palavra selecionada
 * Traduz para inglês
 * Consulta a API de dicionário
 * Traduz a definição para português
-* Armazena o resultado
+* Retorna o resultado para o content script
 
-### 🔹 Popup (React)
+### 🔹 UI (Popup na página)
 
-* Solicita os dados ao abrir
-* Exibe a palavra e sua definição
+* Exibe a palavra selecionada
+* Mostra estado de carregamento
+* Atualiza com a definição
+* Permite fechar manualmente ou clicando fora
 
 ---
 
@@ -55,68 +62,51 @@ Content Script → Background → Popup
 
 ## 📦 Instalação e uso
 
-### 1. Clone o repositório
+1. Clone o repositório
+   git clone [https://github.com/ivadivad/QuickDefine](https://github.com/ivadivad/QuickDefine)
+   cd QuickDefine
 
-```bash
-git clone https://github.com/ivadivad/QuickDefine
-cd QuickDefine
-```
+2. Instale as dependências
+   npm install
 
----
+3. Build do projeto
+   npm run build
 
-### 2. Instale as dependências
+4. Carregar no Chrome
 
-```bash
-npm install
-```
-
----
-
-### 3. Build do projeto
-
-```bash
-npm run build
-```
-
----
-
-### 4. Carregar no Chrome
-
-1. Acesse: `chrome://extensions`
-2. Ative o **Modo do desenvolvedor**
-3. Clique em **"Carregar sem compactação"**
-4. Selecione a pasta:
-
-```txt
-dist/
-```
+* Acesse: chrome://extensions
+* Ative o Modo do desenvolvedor
+* Clique em "Carregar sem compactação"
+* Selecione a pasta: dist/
 
 ---
 
 ## 🧪 Como testar
 
-1. Abra qualquer site
+1. Abra qualquer site (ex: [https://google.com](https://google.com))
 2. Selecione uma palavra
-3. Clique na extensão
-4. Veja a definição aparecer no popup
+3. Clique com o botão direito
+4. Clique em "Definir palavra"
+5. Veja o popup aparecer com a definição
 
 ---
 
 ## ⚠️ Observações
 
-* O popup não permanece aberto ao interagir com a página (comportamento padrão do Chrome)
-* A definição pode aparecer inicialmente como "Carregando..." devido ao tempo de resposta das APIs
-* É necessário recarregar a página após atualizar a extensão durante o desenvolvimento
+* O popup é renderizado diretamente na página (não usa o popup padrão do Chrome)
+* Algumas páginas (como chrome:// ou intranets restritas) podem bloquear scripts
+* A definição pode demorar alguns segundos devido às APIs externas
+* É necessário recarregar a página após atualizar a extensão
 
 ---
 
 ## 🔮 Melhorias futuras
 
-* Atualização em tempo real do popup
-* Histórico de palavras pesquisadas
-* Interface mais elaborada
-* Suporte offline (cache)
-* Detecção de idioma mais robusta
+* Posicionar popup próximo à palavra selecionada
+* Animações (fade-in / transições)
+* Suporte multilíngue mais robusto
+* Cache para respostas mais rápidas
+* Detecção de contexto da frase
 
 ---
 
@@ -129,5 +119,4 @@ dist/
 
 ## 📄 Licença
 
-Este projeto é open-source e pode ser utilizado para fins de estudo e aprimoramento.
-
+Este projeto é open-source e pode ser utilizado para fins de estudo, portfólio e aprimoramento técnico.

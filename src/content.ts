@@ -1,3 +1,5 @@
+import { showPopup } from "./showPopup";
+
 console.log("Content script ativo");
 
 document.addEventListener("mouseup", () => {
@@ -11,5 +13,11 @@ document.addEventListener("mouseup", () => {
     } catch {
       console.log("Extensão recarregada");
     }
+  }
+});
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "DEFINE") {
+    showPopup(msg.word);
   }
 });

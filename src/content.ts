@@ -35,14 +35,42 @@ const handleSelection = debounce(() => {
 
   lastSelected = text;
 
-  // Obtém a posição da seleção na tela
+  // Obtém o range da seleção
   const range = selection.getRangeAt(0);
+
+  // Obtém a posição da seleção na tela (antes de alterar o DOM)
   const rect = range.getBoundingClientRect();
 
   const position = {
     x: rect.left + window.scrollX,
-    y: rect.top + window.scrollY
+    y: rect.bottom + window.scrollY,
   };
+
+  // Remove highlight antigo sem quebrar o conteúdo
+  document.querySelectorAll(".qd-highlight").forEach((el) => {
+    const parent = el.parentNode;
+    if (!parent) return;
+
+    while (el.firstChild) {
+      parent.insertBefore(el.firstChild, el);
+    }
+
+    parent.removeChild(el);
+  });
+
+  // Aplica highlight de forma segura (evita erros com múltiplos nós)
+  try {
+    const span = document.createElement("span");
+    span.className = "qd-highlight";
+    span.style.background = "#ffe066";
+    span.style.borderRadius = "4px";
+
+    const contents = range.extractContents();
+    span.appendChild(contents);
+    range.insertNode(span);
+  } catch {
+    // Caso falhe, ignora sem quebrar execução
+  }
 
   try {
     // Verifica se o contexto da extensão ainda é válido
@@ -51,7 +79,7 @@ const handleSelection = debounce(() => {
     // Envia a palavra e posição para o background
     chrome.runtime.sendMessage({
       word: text,
-      position
+      position,
     });
   } catch {
     // Caso a extensão tenha sido recarregada/invalida, interrompe o listener
@@ -60,7 +88,6 @@ const handleSelection = debounce(() => {
     isAlive = false;
     document.removeEventListener("mouseup", handleSelection);
   }
-
 }, 400);
 
 // Escuta evento de seleção de texto com o mouse

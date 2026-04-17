@@ -1,5 +1,4 @@
-export function showPopup(word: string) {
-  // remove popup anterior
+export function showPopup(word: string, position?: { x: number; y: number } | null) {
   const existing = document.getElementById("quickdefine-popup");
   if (existing) existing.remove();
 
@@ -7,36 +6,44 @@ export function showPopup(word: string) {
   popup.id = "quickdefine-popup";
 
   popup.innerHTML = `
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between;">
       <strong>${word}</strong>
-      <span id="qd-close" style="cursor:pointer; font-size:16px;">✕</span>
+      <span id="qd-close" style="cursor:pointer;">✕</span>
     </div>
     <div id="qd-meaning" style="margin-top:8px;">Carregando...</div>
-  `
+  `;
 
   Object.assign(popup.style, {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    background: "#2d3748", // 🔥 cinza escuro mais suave
-    color: "#f7fafc",
-    padding: "14px",
-    borderRadius: "12px",
+    position: "absolute",
+    background: "#2d3748",
+    color: "#fff",
+    padding: "12px",
+    borderRadius: "10px",
     zIndex: "999999",
-    width: "260px",
+    width: "250px",
     fontSize: "14px",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-    fontFamily: "Arial, sans-serif"
+    boxShadow: "0 10px 20px rgba(0,0,0,0.3)"
   });
+
+  // 🔥 posicionamento inteligente
+  if (position) {
+    popup.style.left = `${position.x}px`;
+    popup.style.top = `${position.y + 20}px`; // um pouco abaixo da palavra
+  } else {
+    // fallback (botão direito)
+    popup.style.bottom = "20px";
+    popup.style.right = "20px";
+    popup.style.position = "fixed";
+  }
 
   document.body.appendChild(popup);
 
-  // 🔥 botão de fechar
+  // fechar botão
   document.getElementById("qd-close")?.addEventListener("click", () => {
     popup.remove();
   });
 
-  // 🔥 fechar ao clicar fora
+  // fechar clicando fora
   setTimeout(() => {
     document.addEventListener("click", function handleOutside(e) {
       if (!popup.contains(e.target as Node)) {
@@ -46,7 +53,7 @@ export function showPopup(word: string) {
     });
   }, 0);
 
-  // 🔥 busca definição
+  // buscar definição
   chrome.runtime.sendMessage({ word }, (response) => {
     const meaningEl = document.getElementById("qd-meaning");
 

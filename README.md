@@ -1,7 +1,3 @@
-Claro — aqui está o README apenas como texto puro, pronto pra copiar:
-
----
-
 # 📘 QuickDefine
 
 Uma extensão para navegador que permite selecionar qualquer palavra em uma página web e obter sua definição automaticamente, com tradução para português — diretamente na tela, sem precisar abrir abas ou popups do navegador.
